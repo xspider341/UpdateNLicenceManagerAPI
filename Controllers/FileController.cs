@@ -30,9 +30,15 @@ namespace UpdateNLicenceManagerAPI.Controllers
             if (file == null || file.Length == 0)
                 return BadRequest("Upload a file.");
 
-            var path = Path.Combine(Directory.GetCurrentDirectory(), _fileOptions.Path, file.FileName);
+            /*var desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+            var path = Path.Combine(desktopPath, _fileOptions.Path);*/
 
-            using (var stream = new FileStream(path, FileMode.Create))
+            var path = Path.Combine(_fileOptions.Path, file.FileName);
+
+            if (!Directory.Exists(_fileOptions.Path))
+                Directory.CreateDirectory(_fileOptions.Path);
+
+            using (var stream = new FileStream(_fileOptions.Path, FileMode.Create))
             {
                 await file.CopyToAsync(stream);
             }
@@ -48,7 +54,7 @@ namespace UpdateNLicenceManagerAPI.Controllers
             // Örnek: _dbContext.FileMetaDatas.Add(fileMetaData);
             // await _dbContext.SaveChangesAsync();
 
-            
+
             return Ok(new { file.FileName, path });
         }
 

@@ -9,7 +9,7 @@ using UpdateNLicenceManagerAPI.Controllers;
 var builder = WebApplication.CreateBuilder(args);
 
 // JWT Kimlik Doğrulaması Yapılandırması
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+/*builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
         options.TokenValidationParameters = new TokenValidationParameters
@@ -23,6 +23,8 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("YourSecretKey")) //JWT için buraya key üretip girecek.
         };
     });
+*/
+
 
 // MongoDB Yapılandırması
 builder.Services.AddSingleton<IMongoClient, MongoClient>(
@@ -32,9 +34,7 @@ builder.Services.AddSingleton<IMongoClient, MongoClient>(
 var filePath = builder.Configuration.GetValue<string>("FileTransferPath");
 
 // Yapılandırmayı servis konteynerine ekle
-#pragma warning disable CS8601 // Possible null reference assignment.
 builder.Services.AddSingleton(new FileTransferOptions { Path = filePath });
-#pragma warning restore CS8601 // Possible null reference assignment.
 
 // Add services to the container.
 builder.Services.AddControllers();
